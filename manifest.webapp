@@ -1,0 +1,14 @@
+{
+	"name": "Greeting Card Generator",
+	"description" : "Bla.. Bla",
+	"launch_path" : "/index.html",
+	"permissions" : {
+		"camera" : {
+			"description" : "Snap your pic"
+		},
+		"device-storage:sdcard" : {
+			"access" : "readwrite, readcreate",
+			"description" : "Save your cards"
+		}
+	}
+}

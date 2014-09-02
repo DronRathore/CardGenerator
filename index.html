@@ -1,0 +1,185 @@
+<!doctype html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+		<style>
+			a{
+				text-decoration: none;	
+			}
+			body{
+				overflow: hidden;
+				margin:0;
+				padding: 0;
+				font: 16px sans-serif;
+			}
+			.container{
+				width : 100%;
+				margin: 0;
+				padding: 0;
+				list-style: none;
+			}
+			.option{
+				float: left;
+				width: 50%;
+				height: 160px;
+				box-sizing: border-box;
+
+			}
+			.greeting{
+				background: url('./images/greeting-cover.jpg') no-repeat;
+				background-size: auto 100%;
+				background-position: -23px 0;
+			}
+			.option div:not(.tagline) {
+				color: #333;
+				padding-top: 100%;
+				background: rgba(0, 0, 0, 0.3);
+			}
+			.greeting div:not(.tagline) {
+				background: rgba(218, 194, 194, 0.48);
+			}
+			.business{
+				background: url('./images/business-cover.jpg') no-repeat;
+				background-size: auto 100%;
+				background-position: -137px;
+			}
+			.personal{
+				background: url('./images/personal-cover.jpg') no-repeat;
+				background-size: auto 100%;
+				background-position: -50px 0px;
+			}
+			.custom{
+				background: url('./images/custom-cover.jpg') no-repeat;
+				background-size: auto 100%;
+				background-position: -50px 0px;
+			}
+			.custom .tagline{
+				color: #f5f5f5;
+				text-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+			}
+			.business div:not(.tagline) {
+				background: rgba(0, 0, 0, 0.5);
+			}
+			.business .tagline{
+				color: #f5f5f5;
+			}
+			.personal .tagline{
+				color: #fff;
+				text-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
+			}
+			.tagline{
+				margin-top: -30px;
+				width: 100%;
+				padding-left: 10px;
+			}
+			@media(min-width: 340px){
+				.greeting{
+					background-size: cover;
+					background-position: -23px -45px;
+				}
+				.business{
+					background-size: cover;
+					background-position: -23px 0;
+				}
+				.personal{
+					background-size: cover;
+					background-position: 0px;
+				}
+				.custom{
+					background-size: cover;
+					background-position: 0px;
+				}
+			}
+			.hidden{
+				display: none;
+			}
+			.canvas {
+				display: none;
+				position: absolute;
+				width: 100%;
+				height: 100%;
+			}
+			.draw{
+				background: #f5f5f5;
+			}
+		</style>
+		<script>
+			window.onload = function(){
+				var name = document.getElementById("name");
+				name.addEventListener("keydown", function(e){
+					if (e.keyCode == 13){
+						var canvas = document.getElementById("canvas");
+						var c = canvas.getContext("2d");
+						c.clearRect(0, 0, canvas.width, canvas.height);
+						var img = new Image();
+						img.src = "./images/custom-cover.jpg";
+						img.onload = function(){
+							canvas.width = h;
+							canvas.height = w;
+							c.drawImage(img, 0, 0, canvas.width, canvas.height);
+							c.fillStyle = "#999";
+							c.font = "italic 21px Savoye LET";
+							c.fillText("To, "+e.target.value, 20, 20);
+						}						
+					}
+				}, false);
+				var save = document.getElementById("save");
+				save.addEventListener("click", function(){
+					var canvas = document.getElementById("canvas");
+					canvas.toBlob(function(blob){console.log(blob);}, "image/jpeg");
+				}, false);
+
+				var option = document.querySelector(".option");
+				option.addEventListener("click", function(e){
+						document.querySelector(".container").style.display = "none";
+						document.querySelector(".canvas").style.display = "block";
+						var canvas = document.getElementById("canvas");
+						window.h = document.querySelector(".canvas").offsetHeight;
+						window.w = document.querySelector(".canvas").offsetWidth;
+						var ctx = canvas.getContext("2d");
+						var img = new Image();
+						img.src = "./images/custom-cover.jpg";
+						img.onload = function(){
+							canvas.width = h;
+							canvas.height = w;
+							ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+						}
+					}, false);
+			}
+			var grabFiles = function(files){
+				console.log(files);
+			}
+		</script>
+	</head>
+<body>
+	<input type="file" class="hidden" onchange="grabFiles(this.files)"/>
+	<ul class="container">
+		<li class="option greeting">
+			<div>
+				<div class="tagline">Greeting Card</div>
+			</div>
+		</li>
+		<li class="option business">
+			<div>
+				<div class="tagline">Business Card</div>
+			</div>
+		</li>
+		<li class="option personal">
+			<div>
+				<div class="tagline">Personal Card</div>
+			</div>
+		</li>
+		<li class="option custom">
+			<div>
+				<div class="tagline">Custom Cards</div>
+			</div>
+		</li>
+	</ul>
+	<div class="canvas">
+		<canvas class="draw" id="canvas">
+		</canvas>
+		<input type="text" id="name" placeholder="Your Name"/>
+		<input type="button" id="save" value="Save Card"/>
+	</div>
+</body>
+</html>
